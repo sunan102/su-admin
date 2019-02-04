@@ -52,7 +52,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new PasswordErrorException("用户名或密码错误");
         }
         // 构建返回的用户登录成功的token
-        return new UsernamePasswordAuthenticationToken(userDetailModel, password, userDetailModel.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetailModel.getAdminUserId(), userDetailModel.getPassword(), userDetailModel.getAuthorities());
     }
 
     @Override

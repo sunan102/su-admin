@@ -12,7 +12,7 @@ import java.util.Collection;
 public class UserDetailModel implements UserDetails {
     private String username;
     private String password;
-    private String id;
+    private String adminUserId;
 //    private String mobile;
 //    private String realName;
 //    private String companyId;
