@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/admin_web?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-test-query: select 0
+      minimum-idle: 10
+      maximum-pool-size: 15
+      idle-timeout: 30000
+  jpa:
+    show-sql: true
+server:
+  port: 8081
+
+---
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/admin_web?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jmx:
+    default-domain: admin-api
