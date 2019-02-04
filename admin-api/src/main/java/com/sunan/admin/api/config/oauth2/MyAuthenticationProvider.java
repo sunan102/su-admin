@@ -27,7 +27,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        // TODO Auto-generated method stub
         String userName = authentication.getName();// 这个获取表单输入中返回的用户名;
         String password = (String) authentication.getCredentials();// 这个是表单中输入的密码；
         // 这里构建来判断用户是否存在和密码是否正确
@@ -58,7 +57,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        // TODO Auto-generated method stub
         // 这里直接改成retrun true;表示是支持这个执行
         return true;
     }
