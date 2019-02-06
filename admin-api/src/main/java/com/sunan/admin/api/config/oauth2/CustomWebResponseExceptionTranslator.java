@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
 import org.springframework.stereotype.Component;
 
 /**
- * oauth2授权服务器捕获异常
+ * oauth2授权服务器登录时捕获异常
  */
 @Component
 public class CustomWebResponseExceptionTranslator implements WebResponseExceptionTranslator {

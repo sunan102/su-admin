@@ -3,6 +3,7 @@ package com.sunan.admin.api.config.oauth2;
 import com.sunan.admin.api.common.enums.AdminUserStatus;
 import com.sunan.admin.api.config.exception.PasswordErrorException;
 import com.sunan.admin.api.config.exception.UserDisableException;
+import com.sunan.admin.api.config.oauth2.model.UserDetailModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,6 +53,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new PasswordErrorException("用户名或密码错误");
         }
         // 构建返回的用户登录成功的token
+        // 因这里的principle最后会变为字符串类型，所以只能传id或者用户名，用户信息依据id或用户名来获得
         return new UsernamePasswordAuthenticationToken(userDetailModel.getAdminUserId(), userDetailModel.getPassword(), userDetailModel.getAuthorities());
     }
 

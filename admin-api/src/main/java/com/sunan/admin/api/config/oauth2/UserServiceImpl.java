@@ -1,6 +1,7 @@
 package com.sunan.admin.api.config.oauth2;
 
 import com.sunan.admin.api.config.exception.PasswordErrorException;
+import com.sunan.admin.api.config.oauth2.model.UserDetailModel;
 import com.sunan.admin.api.domain.entity.AdminUser;
 import com.sunan.admin.api.domain.repository.AdminUserRepository;
 import org.springframework.beans.BeanUtils;

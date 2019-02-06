@@ -1,4 +1,4 @@
-package com.sunan.admin.api.config.oauth2;
+package com.sunan.admin.api.config.oauth2.model;
 
 import lombok.Getter;
 import lombok.Setter;

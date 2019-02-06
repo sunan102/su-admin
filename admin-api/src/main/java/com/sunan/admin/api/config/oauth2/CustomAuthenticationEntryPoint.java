@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 不知道干嘛的
+ * 无需token认证、认证失败的url会进入此类
  */
 @Component
 public class CustomAuthenticationEntryPoint extends OAuth2AuthenticationEntryPoint {
