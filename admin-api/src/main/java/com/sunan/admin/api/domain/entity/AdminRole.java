@@ -10,12 +10,10 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-public class AdminUser {
+public class AdminRole {
     @Id
-    private String adminUserId;
-    private String username;
-    private String password;
-    private Integer status;
+    private String adminRoleId;
+    private String roleName;
     private Date createOn;
     private Date modifyOn;
 }
