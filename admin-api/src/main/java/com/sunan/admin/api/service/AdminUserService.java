@@ -1,5 +1,6 @@
 package com.sunan.admin.api.service;
 
+import com.sunan.admin.api.common.RetVal;
 import com.sunan.admin.api.domain.entity.AdminUser;
 import com.sunan.admin.api.domain.repository.AdminUserRepository;
 import com.sunan.admin.api.model.admin.user.AdminUserInfoResp;
@@ -23,12 +24,12 @@ public class AdminUserService {
      *
      * @return
      */
-    public AdminUserInfoResp getAdminUserInfo(String id) {
+    public RetVal<AdminUserInfoResp> getAdminUserInfo(String id) {
         AdminUserInfoResp userInfoResp = new AdminUserInfoResp();
         Optional<AdminUser> adminUser = adminUserRepository.findById(id);
         if (adminUser.isPresent()) {
             BeanUtils.copyProperties(adminUser.get(), userInfoResp);
         }
-        return userInfoResp;
+        return new RetVal<>(0,null,userInfoResp);
     }
 }

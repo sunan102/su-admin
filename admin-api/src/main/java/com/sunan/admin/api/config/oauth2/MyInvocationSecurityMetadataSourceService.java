@@ -56,7 +56,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
 //            }
 //        }
         List<String> urls = new ArrayList<>();
-        urls.add("/admin/user/info");
+//        urls.add("/admin/user/info");
         List<ConfigAttribute> array = new ArrayList<>();
         for (String url : urls) {
             matcher = new AntPathRequestMatcher(url);
