@@ -13,6 +13,7 @@ public class AdminMenu {
     @Id
     private String adminMenuId;
     private String menuName;
+    private String url;
     private Integer type;
     private Integer num;
     private String pid;

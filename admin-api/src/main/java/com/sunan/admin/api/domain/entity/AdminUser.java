@@ -15,7 +15,9 @@ public class AdminUser {
     private String adminUserId;
     private String username;
     private String password;
+    private String adminRoleId;
+    private String adminCompanyId;
     private Integer status;
-    private Date createOn;
-    private Date modifyOn;
+    private Date createDate;
+    private Date modifyDate;
 }

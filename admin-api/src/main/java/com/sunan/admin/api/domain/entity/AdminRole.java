@@ -14,6 +14,6 @@ public class AdminRole {
     @Id
     private String adminRoleId;
     private String roleName;
-    private Date createOn;
-    private Date modifyOn;
+    private Date createDate;
+    private Date modifyDate;
 }
