@@ -1,5 +1,6 @@
 package com.sunan.admin.api.model.admin.user;
 
+import com.sunan.admin.api.model.admin.menu.MenuListResp;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +14,5 @@ public class AdminUserInfoResp {
     private Integer status;
     private String adminRoleId;
     private String roleName;
-    private List<AdminUserMenuResp> menuList;
+    private List<MenuListResp> menuList;
 }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
-import { isEmpty } from '@/utils'
+import { isNotEmpty } from '@/utils'
 import qs from "qs";
 import errorCode from '@/const/errorCode'
 import router from '@/router'
@@ -41,7 +41,7 @@ service.interceptors.response.use(
     response => {
         const res = response.data
         if (response.headers['content-type'] == 'application/json;charset=UTF-8') {
-            if (isEmpty(res) && 'flag' in res) {
+            if (isNotEmpty(res) && 'flag' in res) {
                 /**
                  * 自定义返回flag,msg
                  */

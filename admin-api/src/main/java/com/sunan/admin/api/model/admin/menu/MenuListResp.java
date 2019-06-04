@@ -9,5 +9,7 @@ public class MenuListResp {
     private String adminMenuId;
     private String menuName;
     private String url;
-
+    private String pid;
+    private Integer num;
+    private String mark;
 }

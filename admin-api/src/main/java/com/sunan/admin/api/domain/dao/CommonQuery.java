@@ -4,6 +4,7 @@ import com.sunan.admin.api.common.AppConfig;
 import com.sunan.admin.api.common.MyPage;
 import com.sunan.admin.api.common.PageRequest;
 import com.sunan.admin.api.common.RetVal;
+import com.sunan.admin.api.common.enums.RetFlag;
 import com.sunan.admin.api.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class CommonQuery<T> {
     private CommonDao commonDao;
 
     public RetVal<MyPage<T>> getListByPageWithRetVal(StringBuilder sql_sb, Map<String, Object> params, PageRequest pageRequest, Class<T> clazz) {
-        RetVal<MyPage<T>> retVal = new RetVal<>(0, null, getListByPage(sql_sb, params, pageRequest, clazz));
+        RetVal<MyPage<T>> retVal = new RetVal<>(RetFlag.Success, null, getListByPage(sql_sb, params, pageRequest, clazz));
         return retVal;
     }
 
@@ -47,7 +48,7 @@ public class CommonQuery<T> {
     }
 
     public RetVal<List<T>> queryListEntityWithRetVal(StringBuilder sql_sb, Map<String, Object> params, Class<T> clazz) {
-        RetVal<List<T>> retVal = new RetVal<>(0, null, queryListEntity(sql_sb, params, clazz));
+        RetVal<List<T>> retVal = new RetVal<>(RetFlag.Success, null, queryListEntity(sql_sb, params, clazz));
         return retVal;
     }
 }

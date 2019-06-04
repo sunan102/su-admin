@@ -3,12 +3,14 @@ package com.sunan.admin.api.service;
 import com.sunan.admin.api.common.MyPage;
 import com.sunan.admin.api.common.RetVal;
 import com.sunan.admin.api.common.enums.AdminUserStatus;
+import com.sunan.admin.api.common.enums.RetFlag;
 import com.sunan.admin.api.common.strings.MsgStatic;
 import com.sunan.admin.api.domain.dao.CommonQuery;
 import com.sunan.admin.api.domain.entity.AdminRole;
 import com.sunan.admin.api.domain.entity.AdminUser;
 import com.sunan.admin.api.domain.repository.AdminRoleRepository;
 import com.sunan.admin.api.domain.repository.AdminUserRepository;
+import com.sunan.admin.api.model.admin.menu.MenuListResp;
 import com.sunan.admin.api.model.admin.user.*;
 import com.sunan.admin.api.utils.IdUtils;
 import org.springframework.beans.BeanUtils;
@@ -44,20 +46,20 @@ public class AdminUserService {
         if (adminUser.isPresent()) {
             BeanUtils.copyProperties(adminUser.get(), userInfoResp);
             //查询role
-            if (adminUser.get().getAdminRoleId()!=null){
+            if (adminUser.get().getAdminRoleId() != null) {
                 Optional<AdminRole> adminRole = adminRoleRepository.findById(adminUser.get().getAdminRoleId());
                 if (adminRole.isPresent()) {
                     userInfoResp.setAdminRoleId(adminRole.get().getAdminRoleId());
                     userInfoResp.setRoleName(adminRole.get().getRoleName());
                     //查询menu
-                    RetVal<List<AdminUserMenuResp>> menuList = getAdminUserMenuByRoleId(adminRole.get().getAdminRoleId());
+                    RetVal<List<MenuListResp>> menuList = getAdminUserMenuByRoleId(adminRole.get().getAdminRoleId());
                     if (menuList.getData()!=null){
                         userInfoResp.setMenuList(menuList.getData());
                     }
                 }
             }
         }
-        return new RetVal<>(0, null, userInfoResp);
+        return new RetVal<>(RetFlag.Success, null, userInfoResp);
     }
 
     /**
@@ -66,17 +68,17 @@ public class AdminUserService {
      * @return
      * @pauid
      */
-    public RetVal<List<AdminUserMenuResp>> getAdminUserMenuByRoleId(String roleId) {
+    public RetVal<List<MenuListResp>> getAdminUserMenuByRoleId(String roleId) {
         StringBuilder sb = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
-        if (roleId.equalsIgnoreCase("0")){
+        if (roleId.equalsIgnoreCase("0")) {
             //开发用的管理员（可以获取所有的菜单权限）
-            sb.append("SELECT admin_menu.admin_menu_id,url ");
+            sb.append("SELECT admin_menu.* ");
             sb.append("FROM admin_menu ");
             sb.append("ORDER BY num ");
-        }else{
+        } else {
             //普通的角色
-            sb.append("SELECT admin_menu.admin_menu_id,url ");
+            sb.append("SELECT admin_menu.* ");
             sb.append("FROM admin_menu ");
             sb.append("INNER JOIN admin_role_menu ");
             sb.append("ON admin_menu.admin_menu_id=admin_role_menu.admin_menu_id ");
@@ -84,9 +86,8 @@ public class AdminUserService {
             sb.append("ORDER BY num ");
             params.put("roleId", roleId);
         }
-        return commonQuery.queryListEntityWithRetVal(sb, params, AdminUserMenuResp.class);
+        return commonQuery.queryListEntityWithRetVal(sb, params, MenuListResp.class);
     }
-
 
 
     /**
@@ -135,7 +136,7 @@ public class AdminUserService {
         UserDetailResp userDetailResp = new UserDetailResp();
         AdminUser adminUser = adminUserRepository.getOne(id);
         BeanUtils.copyProperties(adminUser, userDetailResp);
-        return new RetVal(0, null, userDetailResp);
+        return new RetVal(RetFlag.Success, null, userDetailResp);
     }
 
     /**
@@ -150,7 +151,7 @@ public class AdminUserService {
             //判断用户名是否存在
             AdminUser user_repeat = adminUserRepository.findByUsername(userDetailReq.getUsername());
             if (user_repeat != null) {
-                return new RetVal(1, "用户名已存在");
+                return new RetVal(RetFlag.Error, "用户名已存在");
             }
             adminUser = new AdminUser();
             BeanUtils.copyProperties(userDetailReq, adminUser);
@@ -167,7 +168,7 @@ public class AdminUserService {
         adminUser.setModifyDate(new Date());
         adminUserRepository.save(adminUser);
 
-        return new RetVal(0, MsgStatic.OperationSuccess);
+        return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess);
     }
 
     /**
@@ -182,7 +183,7 @@ public class AdminUserService {
             adminUser.get().setModifyDate(new Date());
             adminUserRepository.save(adminUser.get());
         }
-        return new RetVal(0, MsgStatic.OperationSuccess);
+        return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess);
     }
 
     /**
@@ -197,7 +198,7 @@ public class AdminUserService {
             adminUser.get().setModifyDate(new Date());
             adminUserRepository.save(adminUser.get());
         }
-        return new RetVal(0, MsgStatic.OperationSuccess);
+        return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess);
     }
 
 }

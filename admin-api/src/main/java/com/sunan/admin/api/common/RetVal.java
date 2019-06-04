@@ -1,5 +1,7 @@
 package com.sunan.admin.api.common;
 
+import com.sunan.admin.api.common.enums.RetFlag;
+
 /**
  * Created by Administrator on 2018/4/12.
  */
@@ -14,13 +16,18 @@ public class RetVal<T> {
     public RetVal() {
     }
 
+    public RetVal(RetFlag flag, String msg) {
+        this.flag = flag.getValue();
+        this.msg = msg;
+    }
+
     public RetVal(int flag, String msg) {
         this.flag = flag;
         this.msg = msg;
     }
 
-    public RetVal(int flag, String msg, T data) {
-        this.flag = flag;
+    public RetVal(RetFlag flag, String msg, T data) {
+        this.flag = flag.getValue();
         this.msg = msg;
         this.data = data;
     }

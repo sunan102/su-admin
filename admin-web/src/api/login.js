@@ -27,3 +27,10 @@ export function logout() {
         method: 'post'
     })
 }
+
+export function getMenuList() {
+    return request({
+        url: 'admin/user/getMenuList',
+        method: 'get'
+    })
+}

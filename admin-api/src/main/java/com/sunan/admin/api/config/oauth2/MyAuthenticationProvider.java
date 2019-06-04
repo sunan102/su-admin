@@ -54,7 +54,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         }
         // 构建返回的用户登录成功的token
         // 因这里的principle最后会变为字符串类型，所以只能传id或者用户名，用户信息依据id或用户名来获得
-        return new UsernamePasswordAuthenticationToken(userDetailModel.getAdminUserId(), userDetailModel.getPassword(), userDetailModel.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetailModel.getAdminUserId(), null, userDetailModel.getAuthorities());
+        return authenticationToken;
     }
 
     @Override

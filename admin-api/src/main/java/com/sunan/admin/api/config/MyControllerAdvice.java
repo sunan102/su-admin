@@ -2,6 +2,7 @@ package com.sunan.admin.api.config;
 
 
 import com.sunan.admin.api.common.RetVal;
+import com.sunan.admin.api.common.enums.RetFlag;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,6 @@ public class MyControllerAdvice {
     @ExceptionHandler(value = Exception.class)
     public RetVal errorHandler(Exception ex) {
         ex.printStackTrace();
-        return new RetVal(1, "服务器异常",ex.getMessage());
+        return new RetVal(RetFlag.Error, "服务器异常",ex.getMessage());
     }
 }

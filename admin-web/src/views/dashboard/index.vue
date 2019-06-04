@@ -13,6 +13,8 @@ export default {
       'name',
       'roles'
     ])
+  },
+  created() {
   }
 }
 </script>
