@@ -65,5 +65,15 @@ public class AdminMenuService {
         return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess,adminMenu.getAdminMenuId());
     }
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    public RetVal delete(String id){
+        adminMenuRepository.deleteById(id);
+        return new RetVal(RetFlag.Success,MsgStatic.OperationSuccess);
+    }
+
 
 }

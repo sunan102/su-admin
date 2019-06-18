@@ -32,5 +32,14 @@ public class AdminMenuController {
         return adminMenuService.save(req);
     }
 
+    /**
+     * 删除
+     *
+     * @return
+     */
+    @PostMapping("/delete")
+    public Object delete(String id) {
+        return adminMenuService.delete(id);
+    }
 
 }
