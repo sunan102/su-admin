@@ -1,5 +1,6 @@
 package com.sunan.admin.api.service;
 
+import com.sunan.admin.api.common.AppConfig;
 import com.sunan.admin.api.common.MyPage;
 import com.sunan.admin.api.common.RetVal;
 import com.sunan.admin.api.common.enums.AdminUserStatus;
@@ -51,8 +52,10 @@ public class AdminUserService {
                 if (adminRole.isPresent()) {
                     userInfoResp.setAdminRoleId(adminRole.get().getAdminRoleId());
                     userInfoResp.setRoleName(adminRole.get().getRoleName());
+                }
+                if (adminRole.isPresent()||adminUser.get().getAdminRoleId().equalsIgnoreCase(AppConfig.SuperAdminRoleId)){
                     //查询menu
-                    RetVal<List<MenuListResp>> menuList = getAdminUserMenuByRoleId(adminRole.get().getAdminRoleId());
+                    RetVal<List<MenuListResp>> menuList = getAdminUserMenuByRoleId(adminUser.get().getAdminRoleId());
                     if (menuList.getData()!=null){
                         userInfoResp.setMenuList(menuList.getData());
                     }
@@ -71,7 +74,7 @@ public class AdminUserService {
     public RetVal<List<MenuListResp>> getAdminUserMenuByRoleId(String roleId) {
         StringBuilder sb = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
-        if (roleId.equalsIgnoreCase("0")) {
+        if (roleId.equalsIgnoreCase(AppConfig.SuperAdminRoleId)) {
             //开发用的管理员（可以获取所有的菜单权限）
             sb.append("SELECT admin_menu.* ");
             sb.append("FROM admin_menu ");

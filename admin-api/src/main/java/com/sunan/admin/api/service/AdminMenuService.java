@@ -39,9 +39,28 @@ public class AdminMenuService {
         sb.append("FROM admin_menu ");
         sb.append("WHERE 1=1 ");
         sb.append("ORDER BY num ");
-        RetVal<List<MenuListResp>> retVal = commonQuery.queryListEntityWithRetVal(sb, params, MenuListResp.class);
-        return retVal;
+        List<MenuListResp> list = commonQuery.queryListEntity(sb, params, MenuListResp.class);
+        return new RetVal<>(RetFlag.Success, null, list);
     }
+//
+//    /**
+//     * 生成菜单树
+//     *
+//     * @param list
+//     * @return
+//     */
+//    public List<MenuListResp> createMenuTree(List<MenuListResp> list, String menuId) {
+//        List<MenuListResp> retList = new ArrayList<>();
+//        if (list != null && list.size() > 0) {
+//            for (MenuListResp menuListResp : list) {
+//                if (menuListResp.getPid().equalsIgnoreCase(menuId)) {
+//                    menuListResp.setChildren(createMenuTree(list, menuListResp.getAdminMenuId()));
+//                    retList.add(menuListResp);
+//                }
+//            }
+//        }
+//        return retList;
+//    }
 
     /**
      * 保存
@@ -62,17 +81,18 @@ public class AdminMenuService {
         }
         adminMenuRepository.save(adminMenu);
 
-        return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess,adminMenu.getAdminMenuId());
+        return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess, adminMenu.getAdminMenuId());
     }
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public RetVal delete(String id){
+    public RetVal delete(String id) {
         adminMenuRepository.deleteById(id);
-        return new RetVal(RetFlag.Success,MsgStatic.OperationSuccess);
+        return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess);
     }
 
 

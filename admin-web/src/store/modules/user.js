@@ -57,6 +57,7 @@ const user = {
           if (data.menuList && data.menuList.length > 0) {
             commit('SET_MENULIST', data.menuList)
           }
+          commit('SET_ROLES', ["测试超级管理员"])
           commit('SET_NAME', data.username)
           // commit('SET_AVATAR', data.avatar)
           resolve(response)

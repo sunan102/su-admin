@@ -64,7 +64,31 @@ export function downloadCsv(response) {
  * @param menuList
  * @returns {Array}
  */
-export function createMenuTree(list, menuList) {
+export function createMenuTree(menuList, pid) {
+    let retMenuList = [];
+    if (menuList && menuList.length > 0) {
+        for (let i = 0; i < menuList.length; i++) {
+            if (menuList[i].pid == pid) {
+                menuList[i].children = createMenuTree(menuList, menuList[i].adminMenuId);
+                const object2 = Object.assign({
+                    id: menuList[i].adminMenuId,
+                    label: menuList[i].menuName
+
+                }, menuList[i]);
+                retMenuList.push(object2);
+            }
+        }
+    }
+    return retMenuList;
+}
+
+/**
+ * 创建菜单树对象
+ * @param list
+ * @param menuList
+ * @returns {Array}
+ */
+export function createMenuTree_old(list, menuList) {
     var result = [];
     if (list && list.length > 0) {
         for (let i = 0; i < list.length; i++) {
@@ -84,7 +108,7 @@ export function createMenuTree(list, menuList) {
                 for (let j = 0; j < menuList.length; j++) {
                     if (menuList[j].pid == node.id) {
                         if (!node.children) {
-                            node.children=[];
+                            node.children = [];
                         }
                         const object2 = Object.assign({
                             id: menuList[j].adminMenuId,

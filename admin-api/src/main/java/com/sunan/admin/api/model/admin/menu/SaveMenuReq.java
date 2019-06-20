@@ -8,8 +8,12 @@ import lombok.Setter;
 public class SaveMenuReq {
     private String adminMenuId;
     private String menuName;
+    private String vueName;
     private String url;
+    private String page;
+    private String icon;
+    private Integer type;
+    private Integer num;
     private String pid;
     private String mark;
-    private Integer num;
 }

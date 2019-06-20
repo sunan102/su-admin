@@ -18,7 +18,7 @@ export function save(data) {
 
 export function del(id) {
   return request({
-    url: '/admin/role/delete',
+    url: '/admin/menu/delete',
     method: 'post',
     params:{
       id:id

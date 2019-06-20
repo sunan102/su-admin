@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 管理员用户表状态
+ * 菜单类型
  */
-public enum AdminUserStatus {
-    Enable("启用", 0),
-    Disable("禁用", 1)
+public enum AdminMenuType {
+    Menu("菜单", 1),
+    Action("功能", 2)
     ;
 
-    AdminUserStatus(String text, Integer value) {
+    AdminMenuType(String text, Integer value) {
         this.text = text;
         this.value = value;
     }
@@ -44,7 +44,7 @@ public enum AdminUserStatus {
 
     public static List<SelectItem> getSelectItemList(int value) {
         List<SelectItem> list = new ArrayList<>();
-        for (AdminUserStatus e : AdminUserStatus.values()) {
+        for (AdminMenuType e : AdminMenuType.values()) {
             boolean isSelected = false;
             if (value == e.getValue()) {
                 isSelected = true;
@@ -56,7 +56,7 @@ public enum AdminUserStatus {
 
     public static String getTextByValue(Integer value) {
         if (value != null) {
-            for (AdminUserStatus e : AdminUserStatus.values()) {
+            for (AdminMenuType e : AdminMenuType.values()) {
                 if (e.getValue() == value) {
                     return e.getText();
                 }

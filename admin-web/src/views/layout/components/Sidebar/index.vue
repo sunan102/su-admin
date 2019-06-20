@@ -17,7 +17,8 @@ export default {
     routes() {
       //通过menulist遍历routes是否显示
       var routes_bak = JSON.parse(JSON.stringify(this.$router.options.routes));
-      return this.createMenuByAuth(routes_bak);
+      // return this.createMenuByAuth(routes_bak);
+      return routes_bak;
     },
     isCollapse() {
       return !this.sidebar.opened;
