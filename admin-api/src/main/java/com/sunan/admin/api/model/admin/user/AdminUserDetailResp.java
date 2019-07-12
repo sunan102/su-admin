@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDetailResp {
+public class AdminUserDetailResp {
 
     /**
      * id

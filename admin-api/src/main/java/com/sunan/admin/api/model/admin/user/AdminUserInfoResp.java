@@ -12,7 +12,6 @@ public class AdminUserInfoResp {
     private String adminUserId;
     private String username;
     private Integer status;
-    private String adminRoleId;
     private String roleName;
     private List<MenuListResp> menuList;
 }

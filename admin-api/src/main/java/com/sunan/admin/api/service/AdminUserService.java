@@ -7,10 +7,11 @@ import com.sunan.admin.api.common.enums.AdminUserStatus;
 import com.sunan.admin.api.common.enums.RetFlag;
 import com.sunan.admin.api.common.strings.MsgStatic;
 import com.sunan.admin.api.domain.dao.CommonQuery;
-import com.sunan.admin.api.domain.entity.AdminRole;
 import com.sunan.admin.api.domain.entity.AdminUser;
+import com.sunan.admin.api.domain.entity.AdminUserRole;
 import com.sunan.admin.api.domain.repository.AdminRoleRepository;
 import com.sunan.admin.api.domain.repository.AdminUserRepository;
+import com.sunan.admin.api.domain.repository.AdminUserRoleRepository;
 import com.sunan.admin.api.model.admin.menu.MenuListResp;
 import com.sunan.admin.api.model.admin.user.*;
 import com.sunan.admin.api.utils.IdUtils;
@@ -23,9 +24,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-/**
- * 通过用户名查询用户信息
- */
 @Service
 public class AdminUserService {
 
@@ -34,11 +32,14 @@ public class AdminUserService {
     @Autowired
     private AdminRoleRepository adminRoleRepository;
     @Autowired
+    private AdminUserRoleRepository adminUserRoleRepository;
+    @Autowired
     private CommonQuery commonQuery;
 
     /**
      * 获取用户信息
      *
+     * @param id 用户id
      * @return
      */
     public RetVal<AdminUserInfoResp> getAdminUserInfo(String id) {
@@ -47,19 +48,35 @@ public class AdminUserService {
         if (adminUser.isPresent()) {
             BeanUtils.copyProperties(adminUser.get(), userInfoResp);
             //查询role
-            if (adminUser.get().getAdminRoleId() != null) {
-                Optional<AdminRole> adminRole = adminRoleRepository.findById(adminUser.get().getAdminRoleId());
-                if (adminRole.isPresent()) {
-                    userInfoResp.setAdminRoleId(adminRole.get().getAdminRoleId());
-                    userInfoResp.setRoleName(adminRole.get().getRoleName());
-                }
-                if (adminRole.isPresent()||adminUser.get().getAdminRoleId().equalsIgnoreCase(AppConfig.SuperAdminRoleId)){
-                    //查询menu
-                    RetVal<List<MenuListResp>> menuList = getAdminUserMenuByRoleId(adminUser.get().getAdminRoleId());
-                    if (menuList.getData()!=null){
-                        userInfoResp.setMenuList(menuList.getData());
+//            if (adminUser.get().getAdminRoleId() != null) {
+//                Optional<AdminRole> adminRole = adminRoleRepository.findById(adminUser.get().getAdminRoleId());
+//                if (adminRole.isPresent()) {
+//                    userInfoResp.setAdminRoleId(adminRole.get().getAdminRoleId());
+//                    userInfoResp.setRoleName(adminRole.get().getRoleName());
+//                }
+//                if (adminRole.isPresent()||adminUser.get().getAdminRoleId().equalsIgnoreCase(AppConfig.SuperAdminRoleId)){
+//                    //查询menu
+//                    RetVal<List<MenuListResp>> menuList = getAdminUserMenuByRoleId(adminUser.get().getAdminRoleId());
+//                    if (menuList.getData()!=null){
+//                        userInfoResp.setMenuList(menuList.getData());
+//                    }
+//                }
+//            }
+            //TODO: 创建用户和角色关系表
+            List<AdminUserRole> adminUserRoleList = adminUserRoleRepository.findByAdminUserId(id);
+            if (adminUserRoleList != null) {
+                Map<String, MenuListResp> menuListRespMap = new HashMap<>();
+                for (AdminUserRole adminUserRole : adminUserRoleList) {
+                    RetVal<List<MenuListResp>> menuList = getAdminUserMenuByRoleId(adminUserRole.getAdminRoleId());
+                    if (menuList.getData() != null) {
+                        for (MenuListResp menuListResp : menuList.getData()) {
+                            if (!menuListRespMap.containsKey(menuListResp.getAdminMenuId())) {
+                                menuListRespMap.put(menuListResp.getAdminMenuId(), menuListResp);
+                            }
+                        }
                     }
                 }
+                userInfoResp.setMenuList(new ArrayList<>(menuListRespMap.values()));
             }
         }
         return new RetVal<>(RetFlag.Success, null, userInfoResp);
@@ -135,11 +152,11 @@ public class AdminUserService {
      *
      * @return
      */
-    public RetVal<UserDetailResp> detail(String id) {
-        UserDetailResp userDetailResp = new UserDetailResp();
+    public RetVal<AdminUserDetailResp> detail(String id) {
+        AdminUserDetailResp adminUserDetailResp = new AdminUserDetailResp();
         AdminUser adminUser = adminUserRepository.getOne(id);
-        BeanUtils.copyProperties(adminUser, userDetailResp);
-        return new RetVal(RetFlag.Success, null, userDetailResp);
+        BeanUtils.copyProperties(adminUser, adminUserDetailResp);
+        return new RetVal(RetFlag.Success, null, adminUserDetailResp);
     }
 
     /**
@@ -148,25 +165,25 @@ public class AdminUserService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public RetVal save(UserDetailReq userDetailReq) {
+    public RetVal save(AdminUserDetailReq adminUserDetailReq) {
         AdminUser adminUser = null;
-        if (StringUtils.isEmpty(userDetailReq.getId())) {
+        if (StringUtils.isEmpty(adminUserDetailReq.getId())) {
             //判断用户名是否存在
-            AdminUser user_repeat = adminUserRepository.findByUsername(userDetailReq.getUsername());
+            AdminUser user_repeat = adminUserRepository.findByUsername(adminUserDetailReq.getUsername());
             if (user_repeat != null) {
                 return new RetVal(RetFlag.Error, "用户名已存在");
             }
             adminUser = new AdminUser();
-            BeanUtils.copyProperties(userDetailReq, adminUser);
+            BeanUtils.copyProperties(adminUserDetailReq, adminUser);
             adminUser.setAdminUserId(IdUtils.createUuid());
             adminUser.setCreateDate(new Date());
             adminUser.setStatus(AdminUserStatus.Enable.getValue());
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            adminUser.setPassword(bCryptPasswordEncoder.encode(userDetailReq.getPassword()));
+            adminUser.setPassword(bCryptPasswordEncoder.encode(adminUserDetailReq.getPassword()));
         } else {
             //修改
-            adminUser = adminUserRepository.getOne(userDetailReq.getId());
-            BeanUtils.copyProperties(userDetailReq, adminUser, "username", "password");
+            adminUser = adminUserRepository.getOne(adminUserDetailReq.getId());
+            BeanUtils.copyProperties(adminUserDetailReq, adminUser, "username", "password");
         }
         adminUser.setModifyDate(new Date());
         adminUserRepository.save(adminUser);
