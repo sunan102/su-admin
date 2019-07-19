@@ -10,7 +10,7 @@ public class AdminUserDetailReq {
     /**
      * id
      */
-    private String id;
+    private String adminUserId;
 
     /**
      * 用户名
@@ -18,42 +18,12 @@ public class AdminUserDetailReq {
     private String username;
 
     /**
-     * 用户名
+     * 密码
      */
     private String password;
-
-    /**
-     * 手机
-     */
-    private String mobile;
-
-    /**
-     * 真实姓名
-     */
-    private String realName;
-
-    /**
-     * 性别
-     */
-    private Integer sex;
-
-    /**
-     * 工号
-     */
-    private String jobNo;
-
-    /**
-     * 公司id
-     */
-    private String companyId;
 
     /**
      * 状态
      */
     private Integer status;
-
-    /**
-     * 角色id
-     */
-    private String roleId;
 }

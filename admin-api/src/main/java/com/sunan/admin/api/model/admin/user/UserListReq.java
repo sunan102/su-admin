@@ -12,19 +12,5 @@ public class UserListReq extends PageRequest {
      * 用户名
      */
     private String username;
-    /**
-     * 手机
-     */
-    private String mobile;
-
-    /**
-     * 工号
-     */
-    private String jobNo;
-
-    /**
-     * 公司名
-     */
-    private String companyId;
 
 }

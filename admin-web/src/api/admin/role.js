@@ -18,7 +18,7 @@ export function save(data) {
 
 export function getDetail(id) {
   return request({
-    url: '/admin/role/detail',
+    url: '/admin/role/getDetail',
     method: 'get',
     params: {
       id: id

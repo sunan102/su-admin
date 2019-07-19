@@ -5,12 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdatePwdReq {
+public class ResetPwdReq {
 
-    /**
-     * id
-     */
-    private String uid;
+    private String adminUserId;
 
     private String password;
 }

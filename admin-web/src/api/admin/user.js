@@ -18,7 +18,7 @@ export function save(data) {
 
 export function getDetail(id) {
   return request({
-    url: '/admin/user/detail',
+    url: '/admin/user/getDetail',
     method: 'get',
     params: {
       id: id
@@ -46,9 +46,9 @@ export function enable(id) {
   })
 }
 
-export function updatePwd(data) {
+export function resetPwd(data) {
   return request({
-    url: '/admin/user/updatePwd',
+    url: '/admin/user/resetPwd',
     method: 'post',
     data
   })

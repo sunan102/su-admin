@@ -48,21 +48,6 @@ public class AdminUserService {
         if (adminUser.isPresent()) {
             BeanUtils.copyProperties(adminUser.get(), userInfoResp);
             //查询role
-//            if (adminUser.get().getAdminRoleId() != null) {
-//                Optional<AdminRole> adminRole = adminRoleRepository.findById(adminUser.get().getAdminRoleId());
-//                if (adminRole.isPresent()) {
-//                    userInfoResp.setAdminRoleId(adminRole.get().getAdminRoleId());
-//                    userInfoResp.setRoleName(adminRole.get().getRoleName());
-//                }
-//                if (adminRole.isPresent()||adminUser.get().getAdminRoleId().equalsIgnoreCase(AppConfig.SuperAdminRoleId)){
-//                    //查询menu
-//                    RetVal<List<MenuListResp>> menuList = getAdminUserMenuByRoleId(adminUser.get().getAdminRoleId());
-//                    if (menuList.getData()!=null){
-//                        userInfoResp.setMenuList(menuList.getData());
-//                    }
-//                }
-//            }
-            //TODO: 创建用户和角色关系表
             List<AdminUserRole> adminUserRoleList = adminUserRoleRepository.findByAdminUserId(id);
             if (adminUserRoleList != null) {
                 Map<String, MenuListResp> menuListRespMap = new HashMap<>();
@@ -119,28 +104,12 @@ public class AdminUserService {
     public RetVal<MyPage<UserListResp>> getList(UserListReq req) {
         StringBuilder sb = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
-        sb.append("SELECT admin_user.*,company_name,role_name ");
+        sb.append("SELECT admin_user.* ");
         sb.append("FROM admin_user ");
-        sb.append("INNER JOIN admin_company ");
-        sb.append("ON admin_user.admin_company_id = admin_company.admin_company_id ");
-        sb.append("INNER JOIN admin_role ");
-        sb.append("ON admin_user.admin_role_id = admin_role.admin_role_id ");
         sb.append("WHERE 1=1 ");
         if (!StringUtils.isEmpty(req.getUsername())) {
             sb.append("AND username LIKE CONCAT('%',:username,'%') ");
             params.put("username", req.getUsername());
-        }
-        if (!StringUtils.isEmpty(req.getCompanyId())) {
-            sb.append("AND admin_user.admin_company_id=:company_id ");
-            params.put("company_id", req.getCompanyId());
-        }
-        if (!StringUtils.isEmpty(req.getMobile())) {
-            sb.append("AND mobile = :mobile ");
-            params.put("mobile", req.getMobile());
-        }
-        if (!StringUtils.isEmpty(req.getJobNo())) {
-            sb.append("AND job_no = :job_no ");
-            params.put("job_no", req.getJobNo());
         }
         sb.append("ORDER BY admin_user.create_date DESC ");
         RetVal<MyPage<UserListResp>> retVal = commonQuery.getListByPageWithRetVal(sb, params, req, UserListResp.class);
@@ -152,7 +121,7 @@ public class AdminUserService {
      *
      * @return
      */
-    public RetVal<AdminUserDetailResp> detail(String id) {
+    public RetVal<AdminUserDetailResp> getDetail(String id) {
         AdminUserDetailResp adminUserDetailResp = new AdminUserDetailResp();
         AdminUser adminUser = adminUserRepository.getOne(id);
         BeanUtils.copyProperties(adminUser, adminUserDetailResp);
@@ -167,7 +136,7 @@ public class AdminUserService {
     @Transactional(rollbackFor = Exception.class)
     public RetVal save(AdminUserDetailReq adminUserDetailReq) {
         AdminUser adminUser = null;
-        if (StringUtils.isEmpty(adminUserDetailReq.getId())) {
+        if (StringUtils.isEmpty(adminUserDetailReq.getAdminUserId())) {
             //判断用户名是否存在
             AdminUser user_repeat = adminUserRepository.findByUsername(adminUserDetailReq.getUsername());
             if (user_repeat != null) {
@@ -182,7 +151,7 @@ public class AdminUserService {
             adminUser.setPassword(bCryptPasswordEncoder.encode(adminUserDetailReq.getPassword()));
         } else {
             //修改
-            adminUser = adminUserRepository.getOne(adminUserDetailReq.getId());
+            adminUser = adminUserRepository.getOne(adminUserDetailReq.getAdminUserId());
             BeanUtils.copyProperties(adminUserDetailReq, adminUser, "username", "password");
         }
         adminUser.setModifyDate(new Date());
@@ -221,4 +190,17 @@ public class AdminUserService {
         return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess);
     }
 
+    /**
+     * 重置用户密码
+     * @return
+     */
+    public RetVal resetPwd(ResetPwdReq req){
+        Optional<AdminUser> adminUser = adminUserRepository.findById(req.getAdminUserId());
+        if (adminUser.isPresent()) {
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            adminUser.get().setPassword(bCryptPasswordEncoder.encode(req.getPassword()));
+            adminUserRepository.save(adminUser.get());
+        }
+        return new RetVal(RetFlag.Success, MsgStatic.OperationSuccess);
+    }
 }
