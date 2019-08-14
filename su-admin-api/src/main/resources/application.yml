@@ -30,3 +30,5 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jmx:
     default-domain: admin-api
+server:
+  port: 8080
