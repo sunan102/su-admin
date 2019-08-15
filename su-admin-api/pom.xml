@@ -11,7 +11,8 @@
     <groupId>com.sunan.admin</groupId>
     <artifactId>su-admin-api</artifactId>
     <version>0.0.1</version>
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
+    <packaging>jar</packaging>
     <name>admin-api</name>
     <description>Demo project for Spring Boot</description>
 
