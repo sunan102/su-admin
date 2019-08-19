@@ -1,0 +1,9 @@
+version: '3'
+services:
+  su_admin_web:
+    build: .
+    image: su_admin_web
+    container_name: su_admin_web
+    restart: always
+    ports:
+    - "7090:8080"
