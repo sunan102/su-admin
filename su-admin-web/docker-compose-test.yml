@@ -6,4 +6,4 @@ services:
     container_name: su_admin_web
     restart: always
     ports:
-    - "7090:8080"
+    - "7090:80"
