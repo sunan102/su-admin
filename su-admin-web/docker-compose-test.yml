@@ -3,6 +3,8 @@ services:
   su_admin_web:
     image: nginx:1.15
     container_name: su_admin_web
+    volumes:
+      - ./dist/*:/usr/share/nginx/html/
     restart: always
     ports:
     - "7090:80"
