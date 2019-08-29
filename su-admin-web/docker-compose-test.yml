@@ -6,6 +6,6 @@ services:
     volumes:
       - ./dist/:/usr/share/nginx/html/:rw
     restart: always
-    privileged: true
     ports:
     - "7090:80"
+privileged: true
