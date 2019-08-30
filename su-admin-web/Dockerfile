@@ -9,5 +9,4 @@ RUN npm run stage
 
 FROM nginx
 RUN mkdir /app
-COPY /app/dist /app
 COPY nginx.conf /etc/nginx/nginx.conf
