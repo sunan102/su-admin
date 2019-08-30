@@ -1,29 +1,19 @@
 # admin-web
 
-## Project setup
+## 下载包
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 开发环境启动项目
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+npm run dev
 ```
 
-### Run your tests
+### 生产环境打包
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
+npm run stage
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+##### 注意事项：
+1. docker部署时，docker版本建议为17以上，否则不支持Dockerfile多FROM
