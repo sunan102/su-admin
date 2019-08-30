@@ -4,9 +4,9 @@ services:
     build: .
     image: su_admin_web
     container_name: su_admin_web
-    volumes:
-      - ./dist:/usr/share/nginx/html
-      - ./nginx.conf:/etc/nginx/nginx.conf
+#    volumes:
+#      - ./dist:/usr/share/nginx/html
+#      - ./nginx.conf:/etc/nginx/nginx.conf
     restart: always
     ports:
       - "7090:80"
